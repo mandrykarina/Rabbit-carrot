@@ -4,6 +4,7 @@
 #include <locale.h>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 // Конфигурация игры
 const int WIDTH = 40;
@@ -30,7 +31,7 @@ private:
 public:
     Game(int diff) : difficulty(diff), player_x(WIDTH / 2), score(0), lives(3), game_over(false)
     {
-        game_speed = BASE_SPEED - diff * 20;
+        game_speed = BASE_SPEED + (3 - difficulty) * 100; // от 120 до 320
         init_curses();
         spawn_carrot();
     }
@@ -39,6 +40,7 @@ public:
     {
         setlocale(LC_ALL, "");
         initscr();
+        use_default_colors();
         cbreak();
         noecho();
         keypad(stdscr, TRUE);
@@ -94,12 +96,12 @@ public:
             carrot.second++;
             if (carrot.second > HEIGHT)
             {
-                if (abs(player_x - carrot.first) > 2)
+                if (abs(player_x - carrot.first) > 2) // не рядом — теряешь жизнь
                 {
                     if (--lives <= 0)
                         game_over = true;
                 }
-                carrot = {-1, -1}; // Удалить морковь
+                carrot = {-1, -1}; // удалить
                 score += 10 * difficulty;
             }
         }
@@ -189,12 +191,14 @@ int show_menu()
 
 int main()
 {
+    setlocale(LC_ALL, ""); // ДО initscr()
     srand(time(NULL));
     int choice = show_menu();
 
     if (choice != 4)
     {
-        Game game(choice).run();
+        Game game(choice);
+        game.run();
     }
     return 0;
 }
