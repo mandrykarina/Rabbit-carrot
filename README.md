@@ -29,7 +29,7 @@
 ```bash
 g++ -std=c++11 -lncursesw rabbit_catcher.cpp -o rabbit_catcher
 ./rabbit_catcher
-
+```
 
 ## Типа скриншот
 Lives: ❤❤❤
