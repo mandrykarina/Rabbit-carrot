@@ -181,11 +181,10 @@ public:
     void spawn_item() {
         int bone_count = std::count_if(items.begin(), items.end(), [](Item& i) { return i.type == BONE_TYPE; });
 
-        if ((int)items.size() < MAX_ITEMS + difficulty + 6) { // увеличено максимальное число предметов для большего кол-ва моркови
+        if ((int)items.size() < MAX_ITEMS + difficulty + 6) { 
             int rand_type = rand() % 100;
 
             ItemType itype;
-            // Сделаем моркови чаще — например 40%, капусты 25%, кости 35%
             if (rand_type < 40)
                 itype = CARROT_TYPE;
             else if (rand_type < 65)
